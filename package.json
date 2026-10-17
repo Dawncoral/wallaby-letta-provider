@@ -1,0 +1,48 @@
+{
+  "name": "wallaby-letta-provider",
+  "version": "0.1.0",
+  "description": "Wallaby provider for Letta Code — pay-per-token access to Kimi K3 (1M context, open-weight reasoning) at 10% off the official list price",
+  "keywords": [
+    "letta-package",
+    "letta-mod",
+    "letta-code",
+    "wallaby",
+    "wallabytoken",
+    "kimi",
+    "kimi-k3",
+    "moonshot",
+    "provider",
+    "llm",
+    "openai-compatible"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "README.md",
+    "MOD.md",
+    "mods"
+  ],
+  "letta": {
+    "manifestVersion": 1,
+    "mods": [
+      "./mods/index.ts"
+    ],
+    "capabilities": [
+      "providers"
+    ],
+    "engines": {
+      "lettaCodeCli": ">=0.30.8"
+    }
+  },
+  "homepage": "https://wallabytoken.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Dawncoral/wallaby-letta-provider.git"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types --test mods/index.test.ts"
+  }
+}
