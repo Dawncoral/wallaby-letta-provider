@@ -47,7 +47,11 @@ test("activation registers the wallaby provider when capability exists", () => {
   assert.equal(registered.def.apiKey, "WALLABY_API_KEY");
   assert.equal(registered.def.authHeader, true);
   assert.equal(registered.def.models.length, 1);
-  assert.equal(typeof registered.def.listModels, "function");
+  // 0.1.1 regression guard: NO listModels hook. A mod with listModels becomes
+  // "account-scoped" in Letta's local runtime (in-memory catalog per session),
+  // and the first message of a fresh session fails with Unknown model until
+  // /model is opened once. Static-only catalog resolves from registration.
+  assert.equal(registered.def.listModels, undefined);
   // connect fields: API key only, base URL is fixed at provider level
   assert.deepEqual(registered.def.connect.fields, [
     { key: "apiKey", label: "Wallaby API Key", secret: true },
@@ -64,23 +68,10 @@ test("activation degrades gracefully without providers capability", () => {
   assert.equal(warnings.length, 1);
 });
 
-test("listModels falls back to the static catalog without an API key", async () => {
-  let registered: any = null;
-  const letta = {
-    capabilities: { providers: true },
-    providers: {
-      register(id: string, def: any) {
-        registered = { id, def };
-        return { unregister() {} };
-      },
-    },
-  };
-  activate(letta as any);
-  const models = await registered.def.listModels({
-    id: "conn-1",
-    providerName: "wallaby",
-    baseUrl: "https://api.wallabytoken.com/v1",
-    apiKey: undefined,
-  });
-  assert.deepEqual(models, buildStaticModels());
+test("static catalog resolves without any connection or refresh", () => {
+  // The turn path must find kimi-k3 from the registered catalog alone —
+  // no listModels call, no credential, fresh in-memory runtime (0.1.1).
+  const models = buildStaticModels();
+  assert.equal(models[0].id, "kimi-k3");
+  assert.equal(models[0].name, "Kimi K3 (Wallaby)");
 });

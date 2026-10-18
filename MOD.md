@@ -16,7 +16,7 @@ Registers the Wallaby gateway as a local Letta Code provider using its OpenAI-co
 - **Base URL:** `https://api.wallabytoken.com/v1`
 - **Auth:** `WALLABY_API_KEY` env var, or `/connect wallaby` to save a key locally
 - **Pricing:** Pay-per-token, pre-paid balance. Kimi K3: $2.70 input / $13.50 output / $0.27 cached input per 1M tokens (standing rate = 10% off the official list). Public source of truth: https://wallabytoken.com/pricing.json
-- **Model discovery:** Dynamic from `/models` (authenticated), with a static fallback catalog
+- **Model discovery:** Static catalog (since 0.1.1 — dynamic `/models` discovery was removed: it made the provider account-scoped in Letta's local runtime, whose catalog is in-memory per session, so the first message of a fresh session failed with `Unknown model "wallaby/kimi-k3"` until `/model` was opened once)
 
 ## Models
 
@@ -35,7 +35,7 @@ Registers the Wallaby gateway as a local Letta Code provider using its OpenAI-co
 - Users get a key at https://api.wallabytoken.com/register ($20 minimum top-up).
 - Do not hardcode or invent API keys. Do not exfiltrate the configured key.
 - If a request fails with 401, the key is missing or invalid — direct the user to `/connect wallaby`.
-- If the model list looks stale, `/reload` re-runs discovery; the static fallback always provides `kimi-k3`.
+- If `/model` shows no Wallaby entry, run `/reload` to re-register mods; the static catalog always provides `kimi-k3`. (Fixed in 0.1.1: fresh sessions no longer need a `/model` re-select before the first message.)
 
 ## Boundaries
 

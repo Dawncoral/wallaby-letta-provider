@@ -5,8 +5,12 @@
 // pre-paid balance, Kimi K3 at 10% off the official list price.
 //
 // Auth: WALLABY_API_KEY env var, or /connect wallaby to save a key locally.
-// Models: discovered live from /models (authenticated), with a static
-// fallback catalog.
+// Models: static catalog only (0.1.1). v0.1.0's live /models discovery hook
+// made the provider "account-scoped" in Letta's local runtime, whose catalog
+// is in-memory per session — the first message of a fresh session then failed
+// with `Unknown model "wallaby/kimi-k3"` until /model was opened once. The
+// gateway serves only kimi-k3 today, so dynamic discovery added nothing;
+// removing listModels makes the catalog available from registration time.
 //
 // Compat notes (all verified against the live gateway with a real key,
 // 2026-10-17):
@@ -46,12 +50,7 @@ const WALLABY_COMPAT = {
   supportsUsageInStreaming: true,
 };
 
-type WallabyModelEntry = {
-  id: string;
-  object?: string;
-};
-
-/** Static fallback catalog when /models cannot be reached. */
+/** Static catalog (the gateway currently serves kimi-k3 only). */
 export function buildStaticModels() {
   return [
     {
@@ -65,44 +64,6 @@ export function buildStaticModels() {
       compat: WALLABY_COMPAT,
     },
   ];
-}
-
-/**
- * Fetch the live model list from the gateway (requires auth).
- * Falls back to undefined on any error so the caller can use the static
- * catalog. Only kimi-k3 entries are surfaced; the gateway's slash-namespaced
- * alias (moonshotai/kimi-k3) is dropped because Letta model ids must not
- * contain "/".
- */
-async function fetchModels(
-  baseUrl: string,
-  apiKey?: string,
-): Promise<WallabyModelEntry[] | undefined> {
-  if (!apiKey) return undefined;
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 5000);
-  try {
-    const res = await fetch(`${baseUrl}/models`, {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${apiKey}`,
-      },
-      signal: ctrl.signal,
-    });
-    if (!res.ok) return undefined;
-    const data = await res.json();
-    if (!data || !Array.isArray(data.data)) return undefined;
-    return data.data.filter(
-      (m: unknown): m is WallabyModelEntry =>
-        !!m &&
-        typeof m === "object" &&
-        typeof (m as WallabyModelEntry).id === "string",
-    );
-  } catch {
-    return undefined;
-  } finally {
-    clearTimeout(timer);
-  }
 }
 
 export default function activate(letta: any) {
@@ -125,29 +86,6 @@ export default function activate(letta: any) {
     apiKey: API_KEY_ENV,
     authHeader: true,
     models: staticModels,
-    async listModels(connection: {
-      id: string;
-      providerName: string;
-      baseUrl?: string;
-      apiKey?: string;
-      headers?: Record<string, string>;
-    }) {
-      const base = connection.baseUrl?.replace(/\/$/, "") || DEFAULT_BASE_URL;
-      const live = await fetchModels(base, connection.apiKey);
-      if (!live) return staticModels;
-      const usable = live.filter((m) => !m.id.includes("/"));
-      if (usable.length === 0) return staticModels;
-      return usable.map((m) => ({
-        id: m.id,
-        name: m.id === "kimi-k3" ? "Kimi K3 (Wallaby)" : m.id,
-        reasoning: true,
-        input: ["text"] as ("text" | "image")[],
-        cost: { ...PRICING },
-        contextWindow: CONTEXT_WINDOW,
-        maxTokens: MAX_OUTPUT_TOKENS,
-        compat: WALLABY_COMPAT,
-      }));
-    },
     connect: {
       fields: [{ key: "apiKey", label: "Wallaby API Key", secret: true }],
     },
