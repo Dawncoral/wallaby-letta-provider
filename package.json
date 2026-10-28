@@ -1,6 +1,6 @@
 {
   "name": "wallaby-letta-provider",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Wallaby provider for Letta Code — pay-per-token access to Kimi K3 (1M context, open-weight reasoning) at 10% off the official list price",
   "keywords": [
     "letta-package",

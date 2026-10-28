@@ -45,7 +45,7 @@ Discovered live from the gateway after connect; the static catalog always provid
 
 | Model | Context | Reasoning | Tool calling | Price (per 1M tokens) |
 |---|---|---|---|---|
-| `kimi-k3` | 1M | effort levels supported | yes | $2.70 in / $13.50 out / $0.27 cached |
+| `kimi-k3` | 1M | off / minimal / low / medium / high / max | yes (text + image input) | $2.70 in / $13.50 out / $0.27 cached |
 
 Prices track the public source of truth: [wallabytoken.com/pricing.json](https://wallabytoken.com/pricing.json) (standing rate, not a promo window — 10% off the official list).
 
@@ -56,7 +56,8 @@ Letta agents replay their memory blocks on every turn, so stateful workloads are
 ## What the mod does (and doesn't do)
 
 - Registers a local provider only — no tools, commands, events, UI, filesystem, or subprocess access.
-- Network access is limited to the Wallaby gateway endpoint.
+- Network access is limited to the Wallaby gateway endpoint and the public `pricing.json` used to describe newly launched models.
+- A rejected key (401/403) is surfaced when the model list refreshes (for example after `/connect`); a headless run that never refreshes may fall back to the hosted default.
 - Verified against the live gateway with a real key: `reasoning_effort`, `max_completion_tokens`, streaming usage (`stream_options.include_usage`), and tool calling all behave as declared in `mods/index.ts`.
 
 ## Development
