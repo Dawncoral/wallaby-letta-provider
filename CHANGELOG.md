@@ -20,3 +20,7 @@
 - 思考档位：`thinkingLevelMap` 把 off/minimal/low/medium/high/xhigh/max 映射到 `reasoning_effort`（xhigh→high 折叠；none/minimal 实测 200）。
 - 连接校验：模型列表刷新（如 `/connect` 后 `/model`）时，`/v1/models` 返回 401/403 抛出明确错误（key 无效）；headless 不刷新列表的路径可能回落托管默认模型，文档已按实测边界写明。
 - 测试：node:test 八项（静态目录 / compat / 注册 / 无能力降级 / 目录合并 / 坏 key / 网络回退 / 静态解析）。
+
+## Unreleased
+
+- 修正 `mods/index.ts` 历史注释：0.1.0 首发失败的根因是 letta-code 的 model handle 前缀重复（#4995，修于 #5079 / v0.34.17），不是 catalog 时序；0.1.1 的静态目录属于对症但归因错误的 workaround。注释随下一版发布。

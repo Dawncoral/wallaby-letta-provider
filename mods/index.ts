@@ -13,12 +13,14 @@
 // Letta model ids must not contain a slash; ids without a matching entry in
 // the public pricing.json are skipped rather than shown with a wrong price.
 //
-// History: 0.1.0's listModels made the provider "account-scoped" in the
-// 0.34.16 local runtime (its catalog is in-memory per session), so a fresh
-// session failed with `Unknown model "wallaby/kimi-k3"` until /model was
-// opened once. 0.1.1 removed listModels. The static catalog is still
-// registered first, so a fresh session keeps working even when the live
-// fetch is slow or fails.
+// History: 0.1.0 shipped listModels; a fresh session then failed with
+// `Unknown model "wallaby/kimi-k3"` until /model was opened once. We first
+// blamed the per-session catalog and removed listModels in 0.1.1. The real
+// cause was a handle-prefix bug in letta-code (#4995): the saved model
+// handle gained an extra `provider/` prefix, fixed in #5079 and released in
+// v0.34.17. Our 0.34.17 retest passed with listModels back on, so 0.1.2
+// restores it, with the static catalog still registered first so a fresh
+// session works even when the live fetch is slow or fails.
 //
 // Compat notes (all verified against the live gateway with a real key):
 // - reasoning_effort IS supported (none/minimal/low/medium/high/max);
