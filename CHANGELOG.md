@@ -21,6 +21,11 @@
 - 连接校验：模型列表刷新（如 `/connect` 后 `/model`）时，`/v1/models` 返回 401/403 抛出明确错误（key 无效）；headless 不刷新列表的路径可能回落托管默认模型，文档已按实测边界写明。
 - 测试：node:test 八项（静态目录 / compat / 注册 / 无能力降级 / 目录合并 / 坏 key / 网络回退 / 静态解析）。
 
+## 0.1.4 — 2026-11-05
+
+- 新增 `.github/workflows/publish.yml`：GitHub Actions 使用 OIDC Trusted Publishing 运行测试并发布 npm，不配置长期 token；标签 `v*` 或手动触发。
+- 本版用于首次 Trusted Publishing 验证，模型目录、价格与运行时代码不变。
+
 ## 0.1.3 — 2026-11-05
 
 - K3 静态价格对齐公开 pricing.json：输入 $2.55、输出 $12.75、缓存命中 $0.255（每 1M tokens，官方刊例 85 折）；同步代码、测试、README、MOD.md 与 package 描述。
