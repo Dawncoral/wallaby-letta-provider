@@ -2,7 +2,7 @@
 //
 // Registers the Wallaby gateway (https://api.wallabytoken.com/v1) as a local
 // provider using its OpenAI-compatible API endpoint. Pay-per-token,
-// pre-paid balance, Kimi K3 at 10% off the official list price.
+// pre-paid balance, Kimi K3 at 15% off the official list price.
 //
 // Auth: WALLABY_API_KEY env var, or /connect wallaby to save a key locally.
 //
@@ -41,9 +41,9 @@ const PRICING_URL = "https://wallabytoken.com/pricing.json";
 // Per-1M-token USD prices, kept in sync with the public source of truth:
 // https://wallabytoken.com/pricing.json
 const PRICING = {
-  input: 2.7,
-  output: 13.5,
-  cacheRead: 0.27,
+  input: 2.55,
+  output: 12.75,
+  cacheRead: 0.255,
   cacheWrite: 0,
 };
 

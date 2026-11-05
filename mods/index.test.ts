@@ -3,8 +3,8 @@ import assert from "node:assert/strict";
 import activate, { buildStaticModels } from "./index.ts";
 
 // Pricing constants must match https://wallabytoken.com/pricing.json
-// (verified 2026-10-17: input 2.70 / output 13.50 / cacheHit 0.27 per 1M).
-const EXPECTED_COST = { input: 2.7, output: 13.5, cacheRead: 0.27, cacheWrite: 0 };
+// (verified 2026-11-05: input 2.55 / output 12.75 / cacheHit 0.255 per 1M).
+const EXPECTED_COST = { input: 2.55, output: 12.75, cacheRead: 0.255, cacheWrite: 0 };
 
 function registerDef() {
   let registered: any = null;
@@ -112,7 +112,7 @@ test("listModels merges live ids with pricing and drops slash/unpriced ids", asy
           {
             id: "kimi-k3",
             label: "Kimi K3",
-            ours: { input: 2.7, output: 13.5, cacheHitInput: 0.27 },
+            ours: { input: 2.55, output: 12.75, cacheHitInput: 0.255 },
           },
           {
             id: "kimi-k3.1-pro",

@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/wallaby-letta-provider)](https://www.npmjs.com/package/wallaby-letta-provider)
 [![License](https://img.shields.io/npm/l/wallaby-letta-provider)](https://github.com/Dawncoral/wallaby-letta-provider/blob/main/LICENSE)
 
-[Wallaby](https://wallabytoken.com) provider for [Letta Code](https://docs.letta.com/letta-code). Adds pay-per-token access to **Kimi K3** — 1M context, open-weight reasoning — at a standing 10% off the official list price.
+[Wallaby](https://wallabytoken.com?utm_source=npm&utm_medium=readme&utm_campaign=wallaby-letta-provider) provider for [Letta Code](https://docs.letta.com/letta-code). Adds pay-per-token access to **Kimi K3** — 1M context, open-weight reasoning — at a standing 15% off the official list price.
 
 ## Install
 
@@ -25,7 +25,7 @@ Then reload:
 
 ## Connect
 
-Get an API key at [api.wallabytoken.com/register](https://api.wallabytoken.com/register) ($20 minimum top-up), then either:
+Get an API key at [api.wallabytoken.com/register](https://api.wallabytoken.com/register?utm_source=npm&utm_medium=readme&utm_campaign=wallaby-letta-provider). An eligible first top-up is $5 once; the standard minimum after that is $10. Then either:
 
 ```
 /connect wallaby
@@ -45,13 +45,13 @@ Discovered live from the gateway after connect; the static catalog always provid
 
 | Model | Context | Reasoning | Tool calling | Price (per 1M tokens) |
 |---|---|---|---|---|
-| `kimi-k3` | 1M | off / minimal / low / medium / high / max | yes (text + image input) | $2.70 in / $13.50 out / $0.27 cached |
+| `kimi-k3` | 1M | off / minimal / low / medium / high / max | yes (text + image input) | $2.55 in / $12.75 out / $0.255 cached |
 
-Prices track the public source of truth: [wallabytoken.com/pricing.json](https://wallabytoken.com/pricing.json) (standing rate, not a promo window — 10% off the official list).
+Prices track the public source of truth: [wallabytoken.com/pricing.json](https://wallabytoken.com/pricing.json) (standing rate, not a promo window — 15% off the official list).
 
 ## Why Kimi K3 for Letta agents
 
-Letta agents replay their memory blocks on every turn, so stateful workloads are input-token heavy. Kimi K3's cached-input rate ($0.27/1M) is where that repetition gets cheap, and the 1M context window leaves room for long-running agents before compaction.
+Letta agents replay their memory blocks on every turn, so stateful workloads are input-token heavy. Kimi K3's cached-input rate ($0.255/1M) is where that repetition gets cheap, and the 1M context window leaves room for long-running agents before compaction.
 
 ## What the mod does (and doesn't do)
 
@@ -68,5 +68,5 @@ npm test   # node --experimental-strip-types --test mods/index.test.ts
 
 ## Links
 
-- Gateway & pricing: https://wallabytoken.com
+- Gateway & pricing: https://wallabytoken.com?utm_source=npm&utm_medium=readme&utm_campaign=wallaby-letta-provider
 - Letta Code mods: https://github.com/letta-ai/mods
